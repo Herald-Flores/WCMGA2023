@@ -1,0 +1,28 @@
+{
+  "name": "wcmga-slide",
+  "version": "1.2.0",
+  "license": "MIT",
+  "description": "Wordcamp managua 2023 slide",
+  "keywords": [
+    "WCMGA",
+    "ACF"
+  ],
+  "private": true,
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "slidev": {
+    "colorSchema": "both",
+    "highlighter": "all"
+  },
+  "dependencies": {
+    "@slidev/cli": "latest",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest"
+  },
+  "devDependencies": {
+    "@iconify-json/mdi": "^1.1.55"
+  }
+}
