@@ -98,7 +98,7 @@ The last comment block of each slide will be treated as slide notes. It will be 
           Web Developer & Recruiter
         </span>
         <p class="mt-2 mb-4 font-light text-gray-500 dark:text-gray-400">
-          Entusiasta del desarrollo, apasionado por el aprendizaje continuo y dedicado principalmente al desarrollo web.
+          Desarrollador Frontend, apasionado por el aprendizaje continuo. Actualmente reclutador y desarrollador en Boombit.
         </p>
         <ul class="flex space-x-4 sm:mt-0 list-none">
           <li class="list-none">
@@ -326,7 +326,7 @@ h1 {
   /theme-name <br>
 	├── functions.php <br>
 	└── /blocks <br>
-		<span class="ml-8"></span>└── /hero <br>
+		<span class="ml-8"></span>└── /testimonials <br>
 				<span class="ml-16"></span>├── block.json <br>
 				<span class="ml-16"></span>└── index.php <br>
   </div>
@@ -334,7 +334,7 @@ h1 {
      /plugin-name <br>
       ├── index.php <br>
       └── /blocks <br>
-        <span class="ml-8"></span>└── /hero <br>
+        <span class="ml-8"></span>└── /testimonials <br>
           <span class="ml-16"></span>├── block.json <br>
           <span class="ml-16"></span>└── index.php <br>
   </div>
@@ -370,36 +370,124 @@ h1 {
 </style>
 ---
 
-
 # Creemos un bloque con ACF
 
-Registramos nuestro bloque:
+<h4 class="font-bold text-gray-500 dark:text-emerald-100">Registramos nuestro bloque:</h4>
 
+<div class="w-full grid grid-cols-12 grid-rows-3 gap-2">
+<div className="col-span-6">
 <v-clicks>
 
-```ts {all|1|2-3|all}
-add_action( 'init', 'register_acf_blocks' );
+```ts {all|1|2|3|4|all}
+add_action( 'init', 'register_acf_blocks' ); // action hook to register ACF blocks
 function register_acf_blocks() {
-  register_block_type( __DIR__ . '/blocks/hero' );
+  register_block_type( __DIR__ . '/blocks/testimonial' ); // file path to block type register
 }
 ```
+</v-clicks>
+</div>
+<div className="col-span-6 -mt-8 row-span-2 col-start-1 row-start-2">
+<v-clicks>
 
-```ts {all|1|2-3|all}
+```ts {all|1|2|3|4|5|6|7|8|9|10|11|all}
 {
-  "name": "acf/testimonial",
+  "name": "testimonial",
   "title": "Testimonial",
-  "description": "A custom testimonial block that uses ACF fields.",
-  "style": [ "file:./hero.css" ],
+  "description": "Custom testimonial block",
+  "style": [ "file:./testimonial.css" ],
   "category": "formatting",
   "icon": "admin-comments",
-  "keywords": ["testimonial", "quote"],
+  "keywords": ["testimonial", "acf", "custom"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "testimonial.php"
   }
 }
 ```
+</v-clicks>
+</div>
+<div className="col-span-6 -mt-5 row-span-3 col-start-7 row-start-1">
+<v-clicks>
 
+```ts {all|1|2|3|4-10|12|all}
+acf_register_block_type(
+	array(
+		'name'              => 'hero-image',
+		'title'             => __( 'Hero Image Block', 'wcmga23' ),
+		'description'       => __( 'hero custom block', 'wcmga23' ),
+		'render_template'   => dirname( __file__ ) . '/template/hero-image/index.php',
+		'category'          => 'formating', // formatting
+		'icon'              => array(
+			'background' => '#000000',
+			'foreground' => '#ffffff',
+			'src'        => 'cover-image',
+		),
+		'keywords'          => array( 'hero image', 'custom' ),
+		'mode'              => 'preview',
+		'align'             => 'full',
+		'supports'          => array( 'wide', 'full' ),
+		'example'           => array(
+			'attributes' => array(
+				'mode' => 'preview',
+			),
+		),)
+  );
+```
+</v-clicks>
+</div>
+</div>
+
+
+<div class="absolute top-10 right-10 opacity-90">
+  <img
+    class="w-16"
+    src="/wappu.png"
+  >
+</div>
+<div class="absolute bottom-0 left-0 w-full px-10 pt-4 pb-6 flex gap-2 items-center opacity-90">
+  <img
+    class="w-10"
+    src="/logo.png"
+  />
+  <h2 class="font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300">
+    WordCamp Managua 2023
+  </h2>
+</div>
+
+<!--
+The last comment block of each slide will be treated as slide notes.
+-->
+<style>
+h1 {
+ @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
+}
+.img-shadow{
+  box-shadow: 7px 7px 0px 0px #8b5cf6;
+}
+</style>
+---
+
+# Creemos un bloque con ACF
+
+<h4 class="font-bold text-gray-500 dark:text-emerald-100">Registramos nuestras Categorias:</h4>
+
+
+<v-clicks>
+
+```ts {all|1|2|3|4-10|12|all}
+function wcmga_block_category( $categories, $post ) {
+  return array_merge(
+    $categories,
+    array(
+      array(
+        'slug'  => "wcmga2023-blocks",
+        'title' => esc_html__( 'WCMGA Blocks', 'wcmga23' ),
+      ),
+    )
+  );
+}
+add_filter( 'block_categories', 'wcmga_block_category', 10, 2 ); // block_categories acf hook
+```
 </v-clicks>
 
 
@@ -432,26 +520,84 @@ h1 {
 </style>
 ---
 
-# Creemos nuestro template
+
+# Registramos nuestros custom fields
+
+<h4 class="font-bold text-gray-500 dark:text-emerald-100">Agregamos los campos personalizados para nuestro bloque:</h4>
+
+<div className="grid grid-cols-4 grid-rows-1 gap-6 py-6">
+  <div className="col-span-2">
+    <v-clicks>
+      <img src="/acf-field-group.png" alt="ACF Group" class="w-full h-full lg:min-h-60 object-cover object-left img-shadow">
+    </v-clicks>
+  </div>
+  <div className="col-span-2 col-start-3 py-8">
+    <v-clicks>
+      <img src="/acf-block-field-02.png" alt="ACF Field" class="w-full h-full lg:min-h-60 object-cover object-left img-shadow">
+    </v-clicks>  
+  </div>
+</div>
+
+
+<div class="absolute top-10 right-10 opacity-90">
+  <img
+    class="w-16"
+    src="/wappu.png"
+  >
+</div>
+<div class="absolute bottom-0 left-0 w-full px-10 pt-4 pb-6 flex gap-2 items-center opacity-90">
+  <img
+    class="w-10"
+    src="/logo.png"
+  />
+  <h2 class="font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300">
+    WordCamp Managua 2023
+  </h2>
+</div>
+
+<!--
+The last comment block of each slide will be treated as slide notes.
+-->
+<style>
+h1 {
+ @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
+}
+.img-shadow{
+  box-shadow: 7px 7px 0px 0px #8b5cf6;
+}
+</style>
+---
+
+# Creemos nuestro template HTML
 
 <v-clicks>
 
-```ts {all|1|2-3|all}
-<div class="offer-data">
-    <div class="about">
-        <div class="title">
-            <div class="inner">
-                <h3 class="m-b-0"><a href="<?php the_field( 'url' ); ?>"><?php the_field( 'name' ); ?></a></h3>
-                <?php the_field( 'description' ); ?>
-            </div>
-        </div>
-        <div class="price">
-            <div class="inner">
-                <span class="smaller">FROM</span> <?php the_field( 'price' ); ?> EUR
-            </div>
-        </div>
+```html {all}
+<section>
+  <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+    <div class="mx-auto max-w-screen-sm">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Testimonials</h2>
+      <p class="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
+        El WordCamp Managua 2023 es un evento genial organizado por la comunidad de WordPress Nicaragua.
+      </p>
+    </div> 
+    <div class="grid mb-8 lg:mb-12 lg:grid-cols-2">
+      <figure class="flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-b border-gray-200 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
+        <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Un Evento de Tecnología creado con amor</h3>
+          <p class="my-4">"Me gusta formar parte de la comunidad de WordPress Nicaragua. El WordCamp Managua 2023 demuestra que el querer es poder. Gracias comunidad por el apoyo para este maravilloso evento!"</p>
+        </blockquote>
+        <figcaption class="flex justify-center items-center space-x-3">
+          <img class="w-9 h-9 rounded-full" src="/herald-flores.jpg" alt="Herald Flores profile picture">
+          <div class="space-y-0.5 font-medium dark:text-white text-left">
+            <div>Herald Flores</div>
+            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Developer and Recruiter at Boombit</div>
+          </div>
+        </figcaption>    
+      </figure>
     </div>
-</div>
+  </div>
+</section>
 ```
 
 </v-clicks>
@@ -463,6 +609,93 @@ h1 {
     src="/wappu.png"
   >
 </div>
+
+<!--
+The last comment block of each slide will be treated as slide notes.
+-->
+<style>
+h1 {
+ @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
+}
+.img-shadow{
+  box-shadow: 7px 7px 0px 0px #8b5cf6;
+}
+</style>
+---
+
+# Agregamos la información dinámica
+
+<v-clicks>
+
+```php {all|5|8|11|13|16|19|21|all}
+<section>
+  <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+    <div class="mx-auto max-w-screen-sm">
+      <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+        <?php the_field( 'block_title' ); ?>
+      </h2>
+      <p class="mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400">
+        <?php the_field( 'block_description' ); ?>
+      </p>
+    </div> 
+    <?php if( have_rows( 'testimonial_list' ) ): ?>
+    <div class="grid mb-8 lg:mb-12 lg:grid-cols-2">
+      <?php while( have_rows( 'testimonial_list' ) ) : the_row(); ?>
+        <figure class="flex flex-col justify-center items-center p-8 text-center bg-gray-50 border-b border-gray-200 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
+          <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white"><?php the_sub_field( 'title_testimonial' ); ?></h3>
+          </blockquote> 
+        </figure>
+      <?php endwhile; ?>
+    </div>
+    <?php endif; ?>
+  </div>
+</section>
+```
+</v-clicks>
+
+
+<div class="absolute top-10 right-10 opacity-90">
+  <img
+    class="w-16"
+    src="/wappu.png"
+  >
+</div>
+
+<!--
+The last comment block of each slide will be treated as slide notes.
+-->
+<style>
+h1 {
+ @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
+}
+.img-shadow{
+  box-shadow: 7px 7px 0px 0px #8b5cf6;
+}
+</style>
+---
+
+# Recursos Adicionales
+
+<br>
+
+<v-clicks>
+
+- [ACF Documentation](https://www.advancedcustomfields.com/resources/blocks/)
+- [GitHub Repository Plugin Example](https://github.com/Herald-Flores/ACF-block-WCMGA23)
+- [Local WP](https://localwp.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [WordCamp Managua 2023](https://managua.wordcamp.org/2023/)
+
+</v-clicks>
+
+
+<div class="absolute top-32 right-16 opacity-90">
+  <img
+    class="w-40"
+    src="/wappu.png"
+  >
+</div>
 <div class="absolute bottom-0 left-0 w-full px-10 pt-4 pb-6 flex gap-2 items-center opacity-90">
   <img
     class="w-10"
@@ -480,12 +713,57 @@ The last comment block of each slide will be treated as slide notes.
 h1 {
  @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
 }
-.img-shadow{
-  box-shadow: 7px 7px 0px 0px #8b5cf6;
+</style>
+---
+
+# Gracias por su atención
+
+<div class="max-w-xl mx-auto flex items-center justify-center mt-16 dark:bg-slate-900">
+  <div class="p-1 rounded shadow-lg bg-gradient-to-r from-purple-500 via-green-500 to-blue-500">
+    <div class="flex flex-col items-center p-12 space-y-2 bg-slate-900">
+      <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+        Thank You!
+      </h1>
+      <p class="text-xl text-center">Hecho con amor para la comunidad de WordCamp Managua 2023.</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="absolute top-10 right-10 opacity-90">
+  <img
+    class="w-16"
+    src="/wappu.png"
+  >
+</div>
+
+<!--
+The last comment block of each slide will be treated as slide notes.
+-->
+<style>
+h1 {
+ @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
 }
 </style>
 ---
 
+
 # Creado con Slidev
 
+<br >
+<br >
+
 [Documentations](https://sli.dev) 
+
+<div class="absolute top-10 right-10 opacity-90">
+  <img
+    class="w-16"
+    src="/wappu.png"
+  >
+</div>
+
+<style>
+h1 {
+ @apply font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-200 via-indigo-300 to-purple-300;
+}
+</style>
