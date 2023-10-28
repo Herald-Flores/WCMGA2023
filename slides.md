@@ -10,7 +10,7 @@ info: |
 drawings:
   persist: false
 css: unocss
-colorSchema: both
+colorSchema: 'dark'
 author: Herald Flores - Luis Lopez
 keywords: WordPress, WCMGA
 download: true
