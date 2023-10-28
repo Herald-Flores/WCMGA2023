@@ -23,6 +23,7 @@
     "@slidev/theme-seriph": "latest"
   },
   "devDependencies": {
-    "@iconify-json/mdi": "^1.1.55"
+    "@iconify-json/mdi": "^1.1.55",
+    "playwright-chromium": "^1.39.0"
   }
 }

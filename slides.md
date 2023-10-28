@@ -721,10 +721,10 @@ h1 {
 <div class="max-w-xl mx-auto flex items-center justify-center mt-16 dark:bg-slate-900">
   <div class="p-1 rounded shadow-lg bg-gradient-to-r from-purple-500 via-green-500 to-blue-500">
     <div class="flex flex-col items-center p-12 space-y-2 bg-slate-900">
-      <h1 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
-        Thank You!
-      </h1>
-      <p class="text-xl text-center">Hecho con amor para la comunidad de WordCamp Managua 2023.</p>
+      <h2 class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">
+        Muchas Gracias!
+      </h2>
+      <p class="text-xl text-center text-white">Hecho con ❤️ para la comunidad de WordCamp Managua 2023.</p>
     </div>
   </div>
 </div>
